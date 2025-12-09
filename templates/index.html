@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Flask ChatGPT (RAM Memory)</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <div>
+        <div class="title">Flask ChatGPT</div>
+        <div class="sub">聊天记录保存在服务器本地 RAM（重启会清空）</div>
+      </div>
+      <div class="actions">
+        <button id="resetBtn" class="btn ghost" title="清空本次会话">Reset</button>
+      </div>
+    </header>
+
+    <main id="chat" class="chat"></main>
+
+    <footer class="bar">
+      <input id="msg" class="input" placeholder="输入内容，Enter 发送…" autocomplete="off" />
+      <button id="sendBtn" class="btn">Send</button>
+    </footer>
+  </div>
+
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
+
