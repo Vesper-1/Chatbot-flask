@@ -1,32 +1,113 @@
 <!doctype html>
+<!--
+  Flask ChatGPT 聊天界面
+  ======================
+
+  这是应用的主页面，提供用户与 AI 聊天的界面
+
+  页面结构：
+  1. <head>  - 元数据和样式引入
+  2. <header> - 顶部标题栏和 Reset 按钮
+  3. <main>   - 聊天消息显示区域
+  4. <footer> - 底部输入栏和发送按钮
+
+  技术说明：
+  - 使用 Jinja2 模板引擎的 url_for() 函数生成静态文件路径
+  - 所有交互逻辑在 app.js 中实现
+  - 样式定义在 style.css 中
+-->
 <html lang="zh-CN">
 <head>
+  <!-- 字符编码设置为 UTF-8，支持中文显示 -->
   <meta charset="utf-8" />
+
+  <!-- 响应式视口设置，确保在移动设备上正确显示 -->
+  <!-- width=device-width: 宽度等于设备宽度 -->
+  <!-- initial-scale=1: 初始缩放比例为 1 -->
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <!-- 页面标题，显示在浏览器标签页上 -->
   <title>Flask ChatGPT (RAM Memory)</title>
+
+  <!--
+    引入 CSS 样式表
+    使用 Flask 的 url_for() 函数生成正确的静态文件 URL
+    'static' 是 Flask 默认的静态文件夹名
+    filename='style.css' 指定具体的文件名
+  -->
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+  <!--
+    主容器 .wrap
+    包含整个聊天界面，使用 Flexbox 垂直布局
+  -->
   <div class="wrap">
+
+    <!--
+      顶部标题栏
+      包含应用标题和操作按钮
+    -->
     <header class="top">
+      <!-- 标题区域 -->
       <div>
+        <!-- 主标题 -->
         <div class="title">Flask ChatGPT</div>
+        <!-- 副标题说明 -->
         <div class="sub">聊天记录保存在服务器本地 RAM（重启会清空）</div>
       </div>
+
+      <!-- 操作按钮区域 -->
       <div class="actions">
+        <!--
+          Reset 按钮
+          点击后清空所有聊天记录，开始新对话
+          id="resetBtn" 用于 JavaScript 绑定事件
+          class="btn ghost" 使用透明背景的幽灵按钮样式
+          title 属性提供悬停提示
+        -->
         <button id="resetBtn" class="btn ghost" title="清空本次会话">Reset</button>
       </div>
     </header>
 
-    <main id="chat" class="chat"></main>
+    <!--
+      聊天消息显示区域
+      所有的对话消息都会动态添加到这里
+      id="chat" 用于 JavaScript 操作 DOM
+      class="chat" 应用聊天区域的样式（可滚动、flex 布局等）
+    -->
+    <main id="chat" class="chat">
+      <!-- 消息会通过 JavaScript 动态插入到这里 -->
+    </main>
 
+    <!--
+      底部输入栏
+      包含消息输入框和发送按钮
+    -->
     <footer class="bar">
-      <input id="msg" class="input" placeholder="输入内容，Enter 发送…" autocomplete="off" />
+      <!--
+        消息输入框
+        id="msg" 用于 JavaScript 获取用户输入
+        class="input" 应用输入框样式
+        placeholder 显示提示文字
+        autocomplete="off" 禁用浏览器自动完成，避免干扰
+      -->
+      <input id="msg" class="input" placeholder="输入内容，Enter 发送..." autocomplete="off" />
+
+      <!--
+        发送按钮
+        id="sendBtn" 用于 JavaScript 绑定点击事件
+        class="btn" 应用主按钮样式
+      -->
       <button id="sendBtn" class="btn">Send</button>
     </footer>
   </div>
 
+  <!--
+    引入 JavaScript 文件
+    放在 body 末尾确保 DOM 元素已加载完成
+    使用 url_for() 生成正确的静态文件路径
+  -->
   <script src="{{ url_for('static', filename='app.js') }}"></script>
 </body>
 </html>
-
