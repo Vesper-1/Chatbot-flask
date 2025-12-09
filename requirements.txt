@@ -1,0 +1,19 @@
+# Flask ChatGPT 项目依赖
+# =======================
+#
+# 安装方法: pip install -r requirements.txt
+#
+# 如果在国内下载慢，可以使用清华镜像源:
+# pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+# Flask - Python 轻量级 Web 框架
+# 用于创建 Web 服务器和处理 HTTP 请求
+flask>=3.0.0
+
+# OpenAI - OpenAI 官方 Python SDK
+# 用于调用 ChatGPT API
+openai>=1.0.0
+
+# python-dotenv - 环境变量管理工具
+# 用于从 .env 文件加载 API 密钥等敏感配置
+python-dotenv>=1.0.0

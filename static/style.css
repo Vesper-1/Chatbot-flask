@@ -1,0 +1,329 @@
+/*
+ * Flask ChatGPT 样式表
+ * ====================
+ *
+ * 这个文件定义了聊天界面的所有视觉样式
+ * 采用现代简洁的设计风格，支持响应式布局
+ *
+ * 文件结构：
+ * 1. CSS 变量定义（颜色主题）
+ * 2. 基础重置样式
+ * 3. 页面布局
+ * 4. 头部样式
+ * 5. 聊天区域
+ * 6. 消息气泡
+ * 7. 输入区域
+ * 8. 按钮样式
+ * 9. 响应式适配
+ */
+
+/* ============================================================
+   1. CSS 变量定义 - 方便统一管理颜色和尺寸
+   ============================================================ */
+:root {
+    /* 主色调 - 蓝色系 */
+    --primary-color: #007bff;        /* 主要按钮颜色 */
+    --primary-hover: #0056b3;        /* 按钮悬停颜色 */
+
+    /* 背景颜色 */
+    --bg-color: #f5f5f5;             /* 页面背景 */
+    --chat-bg: #ffffff;              /* 聊天区域背景 */
+
+    /* 消息气泡颜色 */
+    --user-bubble: #007bff;          /* 用户消息背景（蓝色） */
+    --user-text: #ffffff;            /* 用户消息文字（白色） */
+    --bot-bubble: #e9ecef;           /* AI 消息背景（浅灰） */
+    --bot-text: #333333;             /* AI 消息文字（深灰） */
+
+    /* 其他颜色 */
+    --border-color: #dee2e6;         /* 边框颜色 */
+    --text-muted: #6c757d;           /* 次要文字颜色 */
+
+    /* 尺寸 */
+    --max-width: 800px;              /* 最大宽度 */
+    --border-radius: 12px;           /* 圆角大小 */
+    --spacing: 16px;                 /* 基础间距 */
+}
+
+/* ============================================================
+   2. 基础重置样式 - 消除浏览器默认样式差异
+   ============================================================ */
+
+/* 使用 border-box 盒模型，让 padding 和 border 包含在 width 内 */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* HTML 和 Body 基础设置 */
+html, body {
+    height: 100%;                    /* 占满整个视口高度 */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                 "Helvetica Neue", Arial, sans-serif;  /* 系统字体栈 */
+    font-size: 16px;                 /* 基础字体大小 */
+    line-height: 1.5;                /* 行高 */
+    background-color: var(--bg-color);
+    color: #333;
+}
+
+/* ============================================================
+   3. 页面布局 - Flexbox 垂直布局
+   ============================================================ */
+
+/* 主容器 - 撑满整个屏幕高度 */
+.wrap {
+    display: flex;                   /* 使用 Flexbox 布局 */
+    flex-direction: column;          /* 垂直方向排列 */
+    height: 100vh;                   /* 视口高度 */
+    max-width: var(--max-width);     /* 限制最大宽度 */
+    margin: 0 auto;                  /* 水平居中 */
+    background-color: var(--chat-bg);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);  /* 轻微阴影 */
+}
+
+/* ============================================================
+   4. 头部样式 - 标题和操作按钮
+   ============================================================ */
+
+.top {
+    display: flex;                   /* 水平排列 */
+    justify-content: space-between;  /* 两端对齐 */
+    align-items: center;             /* 垂直居中 */
+    padding: var(--spacing);
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--chat-bg);
+}
+
+/* 标题文字 */
+.title {
+    font-size: 1.25rem;              /* 标题字体大小 */
+    font-weight: 600;                /* 粗体 */
+    color: #333;
+}
+
+/* 副标题/说明文字 */
+.sub {
+    font-size: 0.875rem;             /* 较小字体 */
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+/* 操作按钮区域 */
+.actions {
+    display: flex;
+    gap: 8px;                        /* 按钮之间的间距 */
+}
+
+/* ============================================================
+   5. 聊天区域 - 消息列表容器
+   ============================================================ */
+
+.chat {
+    flex: 1;                         /* 占据剩余所有空间 */
+    overflow-y: auto;                /* 内容超出时显示滚动条 */
+    padding: var(--spacing);
+    display: flex;
+    flex-direction: column;          /* 消息垂直排列 */
+    gap: 12px;                       /* 消息之间的间距 */
+}
+
+/* 自定义滚动条样式（仅 Webkit 浏览器） */
+.chat::-webkit-scrollbar {
+    width: 6px;                      /* 滚动条宽度 */
+}
+
+.chat::-webkit-scrollbar-track {
+    background: transparent;         /* 轨道透明 */
+}
+
+.chat::-webkit-scrollbar-thumb {
+    background-color: #c1c1c1;       /* 滑块颜色 */
+    border-radius: 3px;              /* 滑块圆角 */
+}
+
+.chat::-webkit-scrollbar-thumb:hover {
+    background-color: #a8a8a8;       /* 悬停时颜色加深 */
+}
+
+/* ============================================================
+   6. 消息气泡样式
+   ============================================================ */
+
+/* 单条消息容器 */
+.msg {
+    display: flex;
+    max-width: 80%;                  /* 消息最大宽度为容器的 80% */
+}
+
+/* 用户消息 - 靠右显示 */
+.msg.user {
+    align-self: flex-end;            /* 右对齐 */
+}
+
+/* AI 消息 - 靠左显示 */
+.msg.bot {
+    align-self: flex-start;          /* 左对齐 */
+}
+
+/* 消息气泡通用样式 */
+.bubble {
+    padding: 10px 16px;              /* 内边距 */
+    border-radius: var(--border-radius);
+    word-wrap: break-word;           /* 长单词换行 */
+    white-space: pre-wrap;           /* 保留换行符 */
+    line-height: 1.5;
+}
+
+/* 用户消息气泡 - 蓝色背景 */
+.msg.user .bubble {
+    background-color: var(--user-bubble);
+    color: var(--user-text);
+    border-bottom-right-radius: 4px; /* 右下角小圆角，像对话气泡 */
+}
+
+/* AI 消息气泡 - 灰色背景 */
+.msg.bot .bubble {
+    background-color: var(--bot-bubble);
+    color: var(--bot-text);
+    border-bottom-left-radius: 4px;  /* 左下角小圆角 */
+}
+
+/* ============================================================
+   7. 输入区域 - 底部固定的输入栏
+   ============================================================ */
+
+.bar {
+    display: flex;
+    gap: 8px;                        /* 输入框和按钮之间的间距 */
+    padding: var(--spacing);
+    border-top: 1px solid var(--border-color);
+    background-color: var(--chat-bg);
+}
+
+/* 输入框样式 */
+.input {
+    flex: 1;                         /* 占据剩余空间 */
+    padding: 12px 16px;
+    font-size: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    outline: none;                   /* 移除默认聚焦轮廓 */
+    transition: border-color 0.2s;   /* 边框颜色过渡动画 */
+}
+
+/* 输入框聚焦状态 */
+.input:focus {
+    border-color: var(--primary-color);  /* 聚焦时显示蓝色边框 */
+}
+
+/* 输入框禁用状态 */
+.input:disabled {
+    background-color: #f5f5f5;
+    cursor: not-allowed;             /* 禁止光标 */
+}
+
+/* ============================================================
+   8. 按钮样式
+   ============================================================ */
+
+/* 按钮基础样式 */
+.btn {
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: 500;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;                 /* 手型光标 */
+    transition: all 0.2s;            /* 过渡动画 */
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* 按钮悬停效果 */
+.btn:hover:not(:disabled) {
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);     /* 轻微上移 */
+}
+
+/* 按钮点击效果 */
+.btn:active:not(:disabled) {
+    transform: translateY(0);        /* 恢复位置 */
+}
+
+/* 按钮禁用状态 */
+.btn:disabled {
+    opacity: 0.6;                    /* 降低透明度 */
+    cursor: not-allowed;
+}
+
+/* 幽灵按钮（透明背景） - 用于 Reset 按钮 */
+.btn.ghost {
+    background-color: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border-color);
+}
+
+.btn.ghost:hover:not(:disabled) {
+    background-color: #f8f9fa;
+    color: #333;
+    border-color: #adb5bd;
+}
+
+/* ============================================================
+   9. 响应式适配 - 移动端优化
+   ============================================================ */
+
+/* 小屏幕设备（手机） */
+@media (max-width: 600px) {
+    .wrap {
+        max-width: 100%;             /* 取消最大宽度限制 */
+        box-shadow: none;            /* 移除阴影 */
+    }
+
+    .top {
+        padding: 12px;
+    }
+
+    .title {
+        font-size: 1.1rem;
+    }
+
+    .sub {
+        font-size: 0.75rem;
+    }
+
+    .chat {
+        padding: 12px;
+    }
+
+    .msg {
+        max-width: 90%;              /* 消息气泡可以更宽 */
+    }
+
+    .bar {
+        padding: 12px;
+    }
+
+    .btn {
+        padding: 12px 16px;          /* 按钮稍小一点 */
+    }
+}
+
+/* ============================================================
+   10. 加载动画 - 等待 AI 回复时的提示
+   ============================================================ */
+
+/* "思考中" 动画效果 */
+.msg.bot .bubble:only-child:empty::after,
+.bubble:contains("...") {
+    content: "...";
+    animation: thinking 1.5s infinite;
+}
+
+@keyframes thinking {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
